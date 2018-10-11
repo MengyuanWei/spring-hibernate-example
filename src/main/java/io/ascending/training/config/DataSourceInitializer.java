@@ -3,6 +3,7 @@ package io.ascending.training.config;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.flywaydb.core.Flyway;
+import org.hibernate.SessionFactory;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
+import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -27,7 +29,7 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
-//@EnableTransactionManagement
+@EnableTransactionManagement
 //@EnableJpaRepositories(basePackages = "io.ascending.training.repository")
 public class DataSourceInitializer {
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -61,6 +63,13 @@ public class DataSourceInitializer {
     public DataSource getDataSource(){
         DataSource dataSource = createDataSource();
         return dataSource;
+    }
+
+    @Bean
+    public HibernateTransactionManager transactionManager(@Autowired SessionFactory sessionFactory) {
+        HibernateTransactionManager txManager = new HibernateTransactionManager();
+        txManager.setSessionFactory(sessionFactory);
+        return txManager;
     }
 
 //    @Bean(name="transactionManager")
