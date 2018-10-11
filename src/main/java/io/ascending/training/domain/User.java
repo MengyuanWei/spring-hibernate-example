@@ -1,13 +1,13 @@
 package io.ascending.training.domain;
 
-import com.sun.istack.internal.NotNull;
+
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.Collection;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 
