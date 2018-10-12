@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.List;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 
@@ -71,6 +72,9 @@ public class User implements Serializable {
     @NotNull
     @Column(name = "confirm_status")
     private Integer confirmStatus;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user",cascade = CascadeType.ALL)
+    private List<Image> images;
 
     @Column
     private String timezone;
@@ -198,4 +202,13 @@ public class User implements Serializable {
     public void setTimezone(String timezone) {
         this.timezone = timezone;
     }
+
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
+    }
+
 }
