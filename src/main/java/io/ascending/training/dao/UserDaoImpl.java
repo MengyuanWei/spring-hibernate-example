@@ -28,4 +28,11 @@ public class UserDaoImpl implements UserDao {
         TypedQuery<User> query=sessionFactory.getCurrentSession().createQuery(hql);
         return query.getResultList();
     }
+
+    @Override
+    public User findByIdEager(Long id) {
+        String hql = "FROM User u JOIN FETCH u.images where u.id = ?1";
+        TypedQuery<User> query=sessionFactory.getCurrentSession().createQuery(hql).setParameter(1,id);
+        return query.getSingleResult();
+    }
 }

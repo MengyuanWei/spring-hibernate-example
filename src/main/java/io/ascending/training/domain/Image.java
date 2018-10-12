@@ -8,10 +8,6 @@ import static javax.persistence.GenerationType.SEQUENCE;
 @Entity
 @Table(name="images")
 public class Image {
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
-
     @Id
     @GeneratedValue(strategy=SEQUENCE, generator="images_id_seq")
     @SequenceGenerator(name="images_id_seq", sequenceName="images_id_seq", allocationSize=1)
@@ -26,6 +22,10 @@ public class Image {
     private String extension;
     @Column
     private String uuid = UUID.randomUUID().toString();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Long getId() {
         return id;

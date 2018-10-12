@@ -115,6 +115,7 @@ public class DataSourceInitializer {
 //        props.put("hibernate.physical_naming_strategy", "io.ascending.training.extend.hibernate.ImprovedNamingStrategy");
         props.put("hibernate.connection.charSet","UTF-8");
         props.put("hibernate.show_sql","true");
+//        props.put("org.hibernate.flushMode","ALWAYS");
         sessionFactoryBean.setHibernateProperties(props);
         return sessionFactoryBean;
     }
