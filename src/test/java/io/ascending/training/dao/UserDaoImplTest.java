@@ -53,17 +53,10 @@ public class UserDaoImplTest extends DaoTestBase {
         img.setTitle("testImage");
         img.setUser(expectedResult);
         imageDao.save(img);
-        em.flush();
-//        em.refresh(expectedResult);
-//        sessionFactory.getCurrentSession().clear();
-//        Hibernate.isInitialized()
-//        Session session = sessionFactory.openSession();
-//        sessionFactory.openSession();
+        sessionFactory.getCurrentSession().flush();
+        sessionFactory.getCurrentSession().refresh(expectedResult);
         User actualResult = userDao.findByIdEager(expectedResult.getId());
-//        session.close();
         assertEquals(actualResult.getImages().size(),1);
-
-//        assertEquals(actualResult.getImages().get(0).getId(),img.getId());
     }
 
 
