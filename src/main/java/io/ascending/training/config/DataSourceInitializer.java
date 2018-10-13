@@ -105,17 +105,25 @@ public class DataSourceInitializer {
 
     @Bean(name="hibernate4AnnotatedSessionFactory")
     @DependsOn("flyway")
+    @Profile({"dev","test","staging","prod"})
     public LocalSessionFactoryBean getLocalSessionFactoryBean(@Autowired DataSource dataSource){
         LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
         sessionFactoryBean.setDataSource(dataSource);
         sessionFactoryBean.setPackagesToScan(new String[] { "io.ascending.training.domain","io.ascending.training.dao"});
-        Properties props = new Properties();
-        props.put("hibernate.dialect", "org.hibernate.spatial.dialect.postgis.PostgisDialect");
-        props.put("hibernate.hbm2ddl.auto", "validate");
-//        props.put("hibernate.physical_naming_strategy", "io.ascending.training.extend.hibernate.ImprovedNamingStrategy");
-        props.put("hibernate.connection.charSet","UTF-8");
-        props.put("hibernate.show_sql","true");
-        props.put("org.hibernate.flushMode","MANUAL");
+        Properties props = getDefaultHibernate();
+        sessionFactoryBean.setHibernateProperties(props);
+        return sessionFactoryBean;
+    }
+
+    @Bean(name="hibernate4AnnotatedSessionFactory")
+    @DependsOn("flyway")
+    @Profile({"unit"})
+    public LocalSessionFactoryBean getLocalSessionFactoryBeanUnit(@Autowired DataSource dataSource){
+        LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
+        sessionFactoryBean.setDataSource(dataSource);
+        sessionFactoryBean.setPackagesToScan(new String[] { "io.ascending.training.domain","io.ascending.training.dao"});
+        Properties props = getDefaultHibernate();
+        props.put("org.hibernate.flushMode","ALWAYS");
         sessionFactoryBean.setHibernateProperties(props);
         return sessionFactoryBean;
     }
@@ -172,5 +180,15 @@ public class DataSourceInitializer {
         flyway.setLocations("classpath:db/migration/");
         flyway.setDataSource(getDataSource());
         return flyway;
+    }
+
+    public Properties getDefaultHibernate(){
+        Properties props = new Properties();
+        props.put("hibernate.dialect", "org.hibernate.spatial.dialect.postgis.PostgisDialect");
+        props.put("hibernate.hbm2ddl.auto", "validate");
+//        props.put("hibernate.physical_naming_strategy", "io.ascending.training.extend.hibernate.ImprovedNamingStrategy");
+        props.put("hibernate.connection.charSet","UTF-8");
+        props.put("hibernate.show_sql","true");
+        return props;
     }
 }

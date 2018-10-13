@@ -35,4 +35,12 @@ public class UserDaoImpl implements UserDao {
         TypedQuery<User> query=sessionFactory.getCurrentSession().createQuery(hql).setParameter(1,id);
         return query.getSingleResult();
     }
+
+    @Override
+    public User findById(Long id) {
+        String hql = "FROM User u where u.id = ?1";
+        TypedQuery<User> query=sessionFactory.getCurrentSession().createQuery(hql).setParameter(1,id);
+        return query.getSingleResult();
+    }
+
 }

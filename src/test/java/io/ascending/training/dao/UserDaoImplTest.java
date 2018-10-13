@@ -16,6 +16,7 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class UserDaoImplTest extends DaoTestBase {
     @Autowired
@@ -57,6 +58,27 @@ public class UserDaoImplTest extends DaoTestBase {
         sessionFactory.getCurrentSession().refresh(expectedResult);
         User actualResult = userDao.findByIdEager(expectedResult.getId());
         assertEquals(actualResult.getImages().size(),1);
+    }
+
+    @Test
+    @Transactional
+    public void findByIdTest(){
+        User expectedResult = new User();
+        expectedResult.setUsername("zhang3");
+        expectedResult.setEmail("test@gmail.com");
+        expectedResult.setPassword("password123");
+        expectedResult.setConfirmPassword("password123");
+        userDao.save(expectedResult);
+        Image img = new Image();
+        img.setExtension("png");
+        img.setUrl("https://test");
+        img.setTitle("testImage");
+        img.setUser(expectedResult);
+        imageDao.save(img);
+//        sessionFactory.getCurrentSession().flush();
+//        sessionFactory.getCurrentSession().refresh(expectedResult);
+        User actualResult = userDao.findById(expectedResult.getId());
+        assertNull(actualResult.getImages());
     }
 
 

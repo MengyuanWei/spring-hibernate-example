@@ -8,4 +8,5 @@ public interface UserDao {
     User save(User user);
     List<User> findAll();
     User findByIdEager(Long id);
+    User findById(Long id);
 }
